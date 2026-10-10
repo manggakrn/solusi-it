@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  web:
+    image: php:8.2-apache
+    container_name: troubleshooting
+    ports:
+      - "8051:80"
+    volumes:
+      - /home/monitoring/angga/troubleshooting:/var/www/html
+    restart: unless-stopped
+    command: bash -c "docker-php-ext-install mysqli pdo pdo_mysql && apache2-foreground"

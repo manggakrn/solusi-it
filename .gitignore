@@ -1,0 +1,5 @@
+config.php
+db.php
+database_terbaru.sql
+*.sql
+uploads/
