@@ -1,47 +1,99 @@
-# 🛠️ IT Troubleshooting & Ticketing System (Dockerized)
+# IT Troubleshooting & Ticketing System (Dockerized)
 
-Aplikasi pencatatan masalah IT (Troubleshooting), manajemen solusi, dan sistem ticketing berbasis PHP 8.2 dan MySQL. Berjalan secara optimal di dalam ekosistem Docker.
+Aplikasi pencatatan masalah IT, manajemen solusi, dan sistem ticketing berbasis PHP 8.2 dan MySQL.
 
-## 🚀 Fitur Utama
-- **Log Masalah (Troubleshooting Log):** Pencatatan *error*, *bug*, atau komplain sistem IT.
-- **CRUD Operations:** Tambah, Edit, Hapus data masalah dan solusinya.
-- **Manajemen User:** Sistem autentikasi admin.
-- **Upload File/Bukti:** Lampiran foto atau dokumen untuk bukti kerusakan/perbaikan.
+## Fitur Utama
 
-## 🛠 Persyaratan Sistem
+- Log Masalah (Troubleshooting Log)
+- CRUD Operations (Tambah, Edit, Hapus)
+- Manajemen User & Autentikasi
+- Upload File/Bukti (foto, dokumen)
+
+## Persyaratan
+
 - Docker & Docker Compose
-- MySQL Server (Bisa berjalan via Docker atau langsung di Host)
 
-## 📦 Cara Instalasi & Deploy di Server Baru
+## Struktur Folder
 
-**1. Download / Clone Repository**
+```
+solusi-it/
+├── database/
+│   └── init.sql            # Database schema + data (auto-import)
+├── uploads/                # Folder upload file/gambar
+├── .env.example            # Template konfigurasi (COPY ke .env)
+├── .gitignore              # File yang tidak di-commit
+├── config.example.php      # Template koneksi database
+├── config.php              # TIDAK DI-COMMIT (copy dari example)
+├── docker-compose.yml      # Konfigurasi Docker
+└── *.php                   # File aplikasi
+```
+
+## Cara Deploy di Server Baru
+
+### 1. Clone Repository
+
 ```bash
 git clone https://github.com/manggakrn/solusi-it.git
 cd solusi-it
 ```
 
-**2. Setup Database**
-Import file database ke dalam MySQL server Anda (buat database dengan nama `troubleshooting`).
-Minta file `database_terbaru.sql` dari admin yang mengelola server utama, lalu import:
-```bash
-mysql -u root -p troubleshooting < database_terbaru.sql
-```
+### 2. Setup Environment
 
-**3. Setup Konfigurasi Database**
-Salin file contoh konfigurasi dan isi dengan kredensial database Anda:
 ```bash
+# Copy template konfigurasi
+cp .env.example .env
 cp config.example.php config.php
+
+# Edit sesuai kebutuhan
+nano .env
 nano config.php
 ```
-Ganti nilai `YOUR_DB_HOST`, `YOUR_DB_USER`, dan `YOUR_DB_PASSWORD` dengan kredensial database Anda yang sebenarnya.
 
-**4. Jalankan Aplikasi (Docker Compose)**
+Isi file `.env`:
+```env
+APP_PORT=8051
+DB_HOST=localhost
+DB_NAME=troubleshooting
+DB_USER=your_user
+DB_PASS=your_password
+```
+
+### 3. Jalankan Aplikasi
+
 ```bash
 docker-compose up -d
 ```
-Aplikasi akan otomatis menyala dan dapat diakses melalui port **8051** (atau sesuai mapping di dalam file `docker-compose.yml`).
 
-## ⚠️ Catatan Keamanan
-- File `config.php` berisi kredensial database dan **TIDAK** ikut di-upload ke GitHub demi keamanan.
-- File `database_terbaru.sql` juga tidak di-upload. Hubungi admin server untuk mendapatkan dump database terbaru.
-- Gunakan `config.example.php` sebagai template konfigurasi.
+Tunggu sekitar 30 detik untuk inisialisasi, lalu akses:
+```
+http://<IP-SERVER>:8051
+```
+
+### 4. Import Database (jika belum ada)
+
+```bash
+# Masuk ke MySQL dan import
+mysql -u root -p troubleshooting < database/init.sql
+```
+
+## Perintah Berguna
+
+```bash
+# Stop aplikasi
+docker-compose down
+
+# Restart aplikasi
+docker-compose restart
+
+# Lihat log
+docker-compose logs -f
+
+# Masuk ke container
+docker exec -it troubleshooting bash
+```
+
+## Catatan Keamanan
+
+- File `.env` dan `config.php` berisi kredensial dan **tidak di-commit** ke Git
+- Ganti password default sebelum deploy ke production
+- Backup database secara berkala

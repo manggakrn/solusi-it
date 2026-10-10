@@ -5,8 +5,13 @@ services:
     image: php:8.2-apache
     container_name: troubleshooting
     ports:
-      - "8051:80"
+      - "${APP_PORT:-8051}:80"
     volumes:
-      - /home/monitoring/angga/troubleshooting:/var/www/html
+      - .:/var/www/html
+    environment:
+      - DB_HOST=${DB_HOST:-localhost}
+      - DB_USER=${DB_USER:-root}
+      - DB_PASS=${DB_PASS:-}
+      - DB_NAME=${DB_NAME:-troubleshooting}
     restart: unless-stopped
     command: bash -c "docker-php-ext-install mysqli pdo pdo_mysql && apache2-foreground"
