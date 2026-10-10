@@ -1,0 +1,289 @@
+Cek sms project pastikan udh terkirim semua
+
+14.00-----------------------------------------------------------------
+1. ambil kontrak DATA Wa failed jika sms project sudah terflag Y semua,seblum dijalanin querynya koordinais sama denny dulu ya
+
+/Smsproject/
+SELECT param1 FROM wa_data LEFT JOIN wa_bulk_dr ON wa_data.wa_id = wa_bulk_dr.messageid 
+WHERE wa_bulk_dr.status = 'failed' 
+AND wa_data.created_date = CURDATE() 
+AND template_name = 'redaksi_waofficial20263' AND source_sms = 'SMS PROJECT'
+
+/nondc/
+SELECT param1 FROM wa_data LEFT JOIN wa_bulk_dr ON wa_data.wa_id = wa_bulk_dr.messageid 
+WHERE wa_bulk_dr.status = 'failed' 
+AND wa_data.created_date = CURDATE() 
+AND template_name = 'redaksi_waofficial20263' AND source_sms = 'SMS Non DC'
+
+
+2. get sms project kaya biasa ngrim sms pagi sampai tombol button terakhir
+             http://172.16.30.33:3108/c_smsproject
+3. hapus DATA di tabel sms yg ga ada di dalem excel itu kontraknya
+         DELETE FROM sms_data WHERE noKontrak NOT IN(' masukan kontrak yg dilmpiran excel')
+4. Pastikan jgn slah hapus,yang kontrak meta failed yg gak dihapus
+5. kirim sms seperti bisa yg sering dijalanin sms project pagi
+6. generate result sampe INSERT result
+          http://172.16.30.33:3108/c_ws_sms
+7. generate result  wa project ke stg_coll_result_sms
+          http://172.16.30.33:3108/c_ws_whatsapp
+8.Pastikan jumlah DATA sesuai dengan final SMS project
+9.  Kirm sms project lewat ssh ke stagging FIF  🚀🚀🚀🚀🚀
+
+*27/03/2026* 
+WA_Blast Sukses terkirim 2.100 Gagal 0 
+*(done Email & PROJECT sudah sesuai datanya dengan Total rincian 2.100)*
+
+*Data WA_Project done sudah terkirim ke stagging FIF,dan sudah sesuai dengan total rekap email dengan total 2.079*
+
+*Report WA_Blast_27Maret2026*
+
+17.00-----------------------------------------------------------------
+Cek sms project pada DB NAS 30.34 sudah terkirim semua 
+atau belum untuk memastikan sudah sinkron.
+
+Buka link http://172.16.30.33:3108/c_home
+Configuration > WS Update SMS > UPDATE RESULT SMS PROJECT > Sync > Insert > M to N
+
+cek lagi pada db_sim dan pastikan data sudah sesuai.
+
+buka moba xterm 30.33 
+node /var/www/html/node_wssms/app_sendresult.js
+enter
+
+tunggu n berubah jadi y semua
+
+*SMS Project DONE* sudah terkirim ke stagg FIF
+Data sudah sesuai dengan jumlah *93.589*
+Terimakasih
+
+17.30-------------------------------------------------------------------
+Menunggu last call dari grup OPS - IT Center Swadaya
+
+Cek result pada db fifdc dan amitra
+dan pastikan aman sesuai
+
+buka back end 30.33
+ws get task & result 
+configuration > get task result > pilih center
+kranggan > auto dial bali result> run
+kranggan3c1 > result > run
+
+KIRIM DATA FIF DC
+	https://172.16.31.11/c_ws_collection_result?created=2026-06-06&coy=00024&type=1 
+
+data amitra  
+	http://172.16.70.3:5121/C_Ws_Collection_Result?created=2026-06-06&coy=00061&type=1
+	
+data FIF HYBRID
+	http://192.168.0.2/C_Ws_Collection_Result?created=2026-06-06&coy=00028&type=1
+
+FIF Autodial KRANGGAN
+	http://192.168.0.223/C_Ws_Collection_Result?created=2026-02-28&coy=00028&type=1
+	
+FIF Sumatra
+	http://172.16.30.33:3108/c_run_ws_autodial 
+	- pilih cabang Sumatra
+	- pilih deskripsi send result
+	- klik run
+	
+jika ada data manual, cek result di rev_eng
+
+FIF SURVEY
+untuk ws penarikanya 
+http://149.129.227.58:1708/doCollection/task?authKey=06b53047cf294f7207789ff5293ad2dc&created=2022-12-20&coy=00021
+
+
+
+untuk ws pengirimanya
+	http://149.129.227.58:1708/doCollection/result?authKey=06b53047cf294f7207789ff5293ad2dc&created=2023-01-31&coy=00021
+
+cek di db sim 30.34
+
+cek di db sim manual jika ada, pake query flag
+
+SETELAH DICEK, CATAT M N FLAG DI REPORT SORE
+
+get data sms
+https://172.16.31.11/
+SD-KRA
+SdKRA5#
+
+WA_BLAST_SORE
+================
+1. klo bali dah lasctall,kirim dta k stagging nasional
+2. lanjut  get sms dc klik sampai tombol terkahir,xcute to staggng FIF
+3. jalankan UTC to MSG3 =>  http://172.16.30.33:1221/
+4. jangan lupa delete datanya yg di excute to stagging supya gak jadi report SMS di db_sms_test  IP 30.34
+
+  delete FROM sms_data WHERE DATE(createdTimeStamp) = DATE(NOW()) AND param IN('UTC1','UTC2')
+
+5. lanjut ke ip 31.11 jalankan query untuk esport data
+
+SELECT msisdn AS NoTelphone , noKontrak AS NoKontrak, aw AS Angs_Ke , top AS TOP , tglAwal AS JTO FROM tblSms ;
+
+6. lanjut bisa lihat PDF yg sudh dishare untuk pengolahan data dan upload & Ngiirim DC ke WA Blast
+5. Gssss lanjut kirim MSG3 berikut data all canter sperti biasa lewat ssh ke FIF....🚀
+
+GET DATA > GET PROVIDER > GET VENDOR > GET FLAG > EXECUTE
+
+setelah di get, lanjut cek pada db sms test
+
+kirim sms ke 30.33
+
+1 = beyond
+3 = pkp
+
+
+get utc TO msg3 masih spert biasa http://172.16.30.33:1221/
+(note jika mau m TO N pastiin semua center udah terkirim ke stagging)
+
+buka link http://172.16.30.33:3108/c_home
+configuration > WS UPDATE SMS > UPDATE RESULT SMS BEFORE CALL
+
+sebelum dikirim ke fif, cek parameter dan pastikan tidak ada double kontrak
+
+Jika aman,langsung kirim ke stagging FIF : 
+	
+node /var/www/html/node_wsfif/dc_sendresult.js (SERVER 30.33)
+	
+cek data apabila ada yg X, di sesuaikan hingga tidak ada lg X
+
+setelah x sudah tidak ada, 
+
+kirim report ke telegram
+
+kirim ke wa helpdesk juga
+
+*Data system DONE* sudah terkirim ke Stagging FIF 
+total *228.106* dan blankphone kontrak total 0
+jumlah sudah sesuai dengan yang diterima ke stagging SIM.... Terimakasih
+
+lalu ss http://172.16.30.30:666/d/tAfk5annk/dashboard-sms?orgId=1
+SMS DC, DATA FIF ,NON DC DAN SMS PROJECT SUKSES TERKIRIM KE STG FIF
+
+SMS DC (WA Blast), DATA FIF, NON DC DAN SMS PROJECT SUKSES TERKIRIM KE STG FIF
+
+SMS DC (WA Blast), DATA FIF, NON DC (0) DAN SMS PROJECT SUKSES TERKIRIM KE STG FIF
+
+SMS DC(0), DATA FIF ,NON DC (0) DAN SMS PROJECT SUKSES TERKIRIM KE STG FIF
+
+DATA FIF, NON DC (WA Blast), DAN SMS PROJECT SUKSES TERKIRIM KE STG FIF
+
+kirim ke grup IT Support WA
+
+ss MUF di grafana untuk anomali call durasi yang 4 digit
+hari ini sampe jam LC terpantau aman mas @Mas Yudha SIM  blm ada yg 4 digit
+
+hari ini sampe jam LC terpantau utnuk MUF telesales mas @Mas Yudha SIM  ada yg 4 digit untuk durasinya mas yud
+
+634900089024 UTC-M
+419500008122 UTC-M
+403901926524 UTC-M 
+303903125124 UTC-M
+206900051924 UTC-M
+209900051624 UTC-M
+613900010423 UTC-M
+634900092724 UTC-M
+204900063225 UTC-M
+840900797125 UTC-M
+155901097625 UTC-M
+155901097625 UTC-M
+142500066424 UTC-M
+237900005123 UTC-M
+312902539024 UTC-M
+519900050225 UTC-M
+815902018924 UTC-M
+437900331423 UTC-M
+129902191225 UTC-M
+210500082125 UTC-M
+216900119725 UTC-M
+405900865325 UTC-M
+128902087025 UTC-M
+543900037825 UTC-M
+844901152924 UTC-M
+616900021825 UTC-M
+402900369025 UTC-M
+402900368925 UTC-M
+234900563825 UTC-M
+422900968624 UTC-M
+165902020725 UTC-M
+314900776623 UTC-M
+634900022625 UTC-M
+404902353424 UTC-M
+550900069925 UTC-M
+263900061225 UTC-M
+263900061325 UTC-M
+406900079625 UTC-M
+220901399423 UTC-M
+551900005824 UTC-M
+203900333123 UTC-M
+167900519025 UTC-M
+126500124525 UTC-M
+612900016725 UTC-M
+262900037924 UTC-M
+240900502123 UTC-M
+240900502223 UTC-M
+532900026824 UTC-M
+130901623124 UTC-M
+508900000125 UTC-M
+439900660425 UTC-M
+610900019425 UTC-M
+229900180126 UTC-M
+616900041524 UTC-M
+221900850323 UTC-M
+803900422525 UTC-M
+505900517325 UTC-M
+401500114025 UTC-M
+222900000226 UTC-M
+621900070524 UTC-M
+
+
+*Data Sms NONDC done sudah terkirim ke stagging FIF,sesuai dengan data FINAL dengan total 1.593*
+
+*Data Sms PROJECT done sudah terkirim ke stagging FIF,sesuai dengan data FINAL dengan total 182.876*
+
+*10/05/2026*
+*WA_Blast Sukses terkirim 82.672 Gagal 4*
+*(done Email,NONDC & PROJECT sudah sesuai datanya dengan Total rincian 82.672*
+
+*Report WA_Blast 10 MEI 2026*
+
+19.00-----------------------------------
+kirim sehati
+	172.16.70.16:2102/ws_shst/c_send_result/sendresult
+	http://172.16.70.20/sd/RTC-STC-ALL-KRANGGAN.php
+kirim success fee
+
+
+	Share data di grup Teleremedial Spc Bucket di db success fee
+	
+	bila data teleremedial kosong coba jalankan ini, bila hasilnya gagal ss dan lapor digrup teleremedial
+	
+	172.16.30.47:4997/Result/send_contacted
+	
+20.00-----------------------------------
+ss di tele applikasi untuk pengiriman data MUF
+
+bila tidak terupdate maka jalankan ini pada ssh MUF
+sudo /bin/bash /root/cronjob/cronjob.daily.sendresult2.sh
+
+Generate MUF reguler dan MUF DC od60 upload sudah berhasil, terima kasih🙏
+20.30---------------------------------
+
+Data MTF sudah terkirim ke core MTF terima kasih🙏
+20.30---------------------------------
+Cek link http://192.168.0.215:9000/c_home
+
+Status FIF PV After LC aman terimakasih🙏
+
+ss kirim ke grup aplikasi
+
+^ PARAMETER MPP sudah dirubah menjadi 225
+
+ubah tabel parameter mpp di db nas > prod5 > tbl parameter
+jumat malam jadi 180
+sabtu malam jadi 225
+
+pv uncall ga jalan
+sudo forever start /var/www/html/socket_verifier/queueagent.js
+forever start /var/www/html/socket_verifier/queueagent.js

@@ -1,0 +1,50 @@
+===== 
+#KR5 
+===== 
+sms sukses terkirim ke operator 
++ DC      		: 0
++ nonDC   		: 1.562
++ sms agent   	: 0 
++ sms project   : 0
++ sms manual    : 0
+
+#Parameter result
+
+stg_param jumlah
+
+MSG-E:      15
+MSG-I:       0
+MSG-S:   1.542
+MSG-U:       5
+
+
+total jumlah 1.562
+
+============ 
+#SYNC_NONDC 
+============ 
+syncron DATA nondc sukses 
+dan terkirim ke FIF (1.562)
+ 
+================ 
+#SYNC_SMS_SMART 
+================= 
+^syncron DATA sms smart sukses dan terkirim ke FIF 
+^ jumlah SMS_TASK = jumlah SMS_RESULT (0) 
+ 
+=============== 
+#REPORT_DATA 
+=============== 
+DATA tanggal 31-05-2026 
+sukses terkirim ke staging FIF
+                      
+- DATA duplikat kontrak tidak ada 
+- NonDC   		= 1.562
+- Blank phone   =     0
+- RTN   		=     0
+% Total result  = 1.562
+
+
+
+
+RTN	 :     61

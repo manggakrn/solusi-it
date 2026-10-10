@@ -1,0 +1,29 @@
+pengiriman MTF after LC
+
+PENGIRIMAN DC AUTODIAL KE STG MTF
+19:00 Pengiriman Result DC AUTODIAL ke STG MTF
+LINK: http://147.139.202.192:5000/c_send_result_to_stg
+Pengiriman Result DC C2C ke STG MTF
+LINK : http://147.139.202.192:1400/c_send_result_to_stg
+
+PENGIRIMAN DC C2C KE STG MTF
+19:00 Pengiriman Result DC C2C KRANGGAN ke STG MTF
+LINK: http://172.16.30.25:500/ws/scheduler/getdataresultforstaging
+19:15 Pengiriman Result DC C2C SEMARANG ke STG MTF
+LINK: http://172.16.30.25:700/ws/scheduler/getdataresultforstaging
+
+PENGIRIMAN OVRS KE STG MTF
+19:30 Pengiriman Result OVRS NONDC / PROJECT ke STG MTF
+LINK: http://149.129.194.239:1206/ws/scheduler/getdataresultforstaging
+19:45 Pengiriman Result OVRS KRANGGAN ke STG MTF
+LINK: http://147.139.174.90:1206/ws/scheduler/getdataresultforstaging
+20:00 Pengiriman Result OVRS SEMARANG ke STG MTF
+LINK: http://149.129.195.57:1206/ws/scheduler/getdataresultforstaging
+
+PENGIRIMAN SMS MTF KE STG MTF
+20:15 Pengiriman Result SMS ke STG MTF
+LINK: http://172.16.30.25:100/ws/scheduler/getdataresultforstaging
+
+PENGIRIMAN STG MTF KE CORE MTF
+20:30 Pengiriman Result STG MTF ke Core MTF (Client)
+LINK: http://172.16.30.25:500/ws/scheduler/sendAPIResult
