@@ -1,0 +1,13 @@
+---
+- name: Tes Main ke Server Sendiri
+  hosts: localhost
+  connection: local
+  gather_facts: yes
+  tasks:
+    - name: Tampilkan pesan Halo
+      ansible.builtin.debug:
+        msg: "Halo! Ansible berhasil berjalan di server ini."
+
+    - name: Cek versi OS / Sistem Operasi
+      ansible.builtin.debug:
+        msg: "Distro OS: {{ ansible_distribution }} {{ ansible_distribution_version }}"
